@@ -1,2 +1,4 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Apply override to all files and directories in the directory
+data/** linguist-vendored=true
+output/** linguist-vendored=true
+*.ipynb linguist-vendored=true
