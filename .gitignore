@@ -73,3 +73,7 @@ build/
 *.egg-info/
 .eggs/
 
+
+.kap
+.claude
+CLAUDE.md
