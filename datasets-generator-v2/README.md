@@ -7,6 +7,7 @@ A comprehensive tool for generating high-quality restaurant review datasets in S
 ## 🚀 Features
 
 ### Core Functionality
+
 - **Multi-Provider Support**: OpenAI, Google Gemini, Anthropic, and xAI models
 - **Three-Worker Architecture**: PROMPTER → XML Validator → PROCESSOR pipeline
 - **Batch Processing**: Generates 5 reviews at a time for better reliability
@@ -15,6 +16,7 @@ A comprehensive tool for generating high-quality restaurant review datasets in S
 - **Robust XML Validation**: Filters invalid XML, continues with valid reviews
 
 ### Advanced Features
+
 - **Incremental Writing**: Appends each valid batch immediately to file
 - **Smart Progress Tracking**: Real-time progress bar with sentence count
 - **Error Recovery**: Discards invalid reviews, continues generation
@@ -23,6 +25,7 @@ A comprehensive tool for generating high-quality restaurant review datasets in S
 - **Rich Console Output**: Clear visual feedback with colored status messages
 
 ### ✨ New in V2.0
+
 - **Payload.json Support**: Configure complex multi-provider/multi-model setups via JSON
 - **Parallel Execution**: Run providers and models concurrently for faster generation
 - **Multiple Models per Provider**: Generate datasets from multiple models in one command
@@ -44,10 +47,12 @@ datasets-generator-v2/
 ## 🛠️ Installation
 
 ### Prerequisites
+
 - Python 3.7+
 - API keys for your chosen LLM provider
 
 ### Dependencies
+
 ```bash
 # Install from requirements.txt (recommended)
 pip install -r requirements.txt
@@ -59,29 +64,26 @@ pip install python-dotenv rich anthropic openai google-generativeai
 **Note**: Version 2.0 requires Python 3.7+ for asyncio support in parallel execution.
 
 ### Configuration Setup
+
 The `config.json` file allows you to customize generation parameters:
 
 ```json
 {
-  "REVIEWS_PER_PROMPT": 5,
-  "SENTENCES_PER_REVIEW_FROM": 1,
-  "SENTENCES_PER_REVIEW_TO": 4,
-  "OPINIONS_PER_SENTENCE_FROM": 1,
-  "OPINIONS_PER_SENTENCE_TO": 3,
-  "CATEGORIES": [
-    "FOOD#QUALITY",
-    "SERVICE#GENERAL", 
-    "AMBIENCE#GENERAL",
-    "PRICE#GENERAL",
-    "LOCATION#GENERAL"
-  ],
-  "POLARITIES": ["positive", "neutral", "negative"],
-  "FILENAME_FORMAT": "{PROVIDER}-{PREFIX}-{TARGET_SIZE}.xml"
+	"REVIEWS_PER_PROMPT": 5,
+	"SENTENCES_PER_REVIEW_FROM": 3,
+	"SENTENCES_PER_REVIEW_TO": 8,
+	"OPINIONS_PER_SENTENCE_FROM": 1,
+	"OPINIONS_PER_SENTENCE_TO": 3,
+	"CATEGORIES": ["FOOD#QUALITY", "SERVICE#GENERAL", "AMBIENCE#GENERAL", "PRICE#GENERAL", "LOCATION#GENERAL"],
+	"POLARITIES": ["positive", "neutral", "negative"],
+	"FILENAME_FORMAT": "{PROVIDER}-{PREFIX}-{TARGET_SIZE}.xml"
 }
 ```
 
 ### LLM Prompt Template (New in V2.1)
+
 The LLM prompt is now externalized to `llm_prompt.md` for better transparency and maintainability:\n\n**Template Variables:**\n- `{reviews_per_prompt}`: Number of reviews to generate per batch\n- `{sentences_from}` / `{sentences_to}`: Sentence count range per review\n- `{opinions_from}` / `{opinions_to}`: Opinion count range per sentence\n- `{categories}`: Available aspect categories\n- `{polarities}`: Available sentiment polarities\n\n**Benefits:**\n- **Transparency**: Clear visibility of the exact prompt sent to LLMs\n- **Version Control**: Track prompt changes separately from code\n- **Easy Modification**: Edit prompts without touching Python code\n- **Research Reproducibility**: Share and reference exact prompts used\n\n**Custom Templates:**\nYou can modify `llm_prompt.md` or specify a different template file path in the configuration.\n\n### Environment Setup\nCreate a `.env` file in the `datasets-generator-v2` folder:
+
 ```env
 OPENAI_API=your_openai_api_key
 GEMINI_API=your_gemini_api_key
@@ -116,20 +118,21 @@ ANTHROPIC_API=your_anthropic_api_key
 
 ### Supported Models & Pricing
 
-| Provider | Model | Input ($/1M tokens) | Output ($/1M tokens) |
-|----------|-------|---------------------|----------------------|
-| **OpenAI** | gpt-4o | $5.00 | $15.00 |
-| **OpenAI** | gpt-4-turbo | $10.00 | $30.00 |
-| **OpenAI** | gpt-3.5-turbo | $1.50 | $2.00 |
-| **Anthropic** | claude-sonnet-4-20250514 | $3.00 | $15.00 |
-| **Anthropic** | claude-3-sonnet-20240229 | $3.00 | $15.00 |
-| **Anthropic** | claude-3-haiku-20240307 | $0.25 | $1.25 |
-| **Google** | gemini-pro | $0.25 | $0.50 |
-| **Google** | gemini-1.5-pro | $1.25 | $5.00 |
+| Provider      | Model                    | Input ($/1M tokens) | Output ($/1M tokens) |
+| ------------- | ------------------------ | ------------------- | -------------------- |
+| **OpenAI**    | gpt-4o                   | $5.00               | $15.00               |
+| **OpenAI**    | gpt-4-turbo              | $10.00              | $30.00               |
+| **OpenAI**    | gpt-3.5-turbo            | $1.50               | $2.00                |
+| **Anthropic** | claude-sonnet-4-20250514 | $3.00               | $15.00               |
+| **Anthropic** | claude-3-sonnet-20240229 | $3.00               | $15.00               |
+| **Anthropic** | claude-3-haiku-20240307  | $0.25               | $1.25                |
+| **Google**    | gemini-pro               | $0.25               | $0.50                |
+| **Google**    | gemini-1.5-pro           | $1.25               | $5.00                |
 
 ## 🔧 Usage
 
 ### Payload Mode (New in V2.0)
+
 For complex multi-provider setups with parallel execution:
 
 ```bash
@@ -143,11 +146,13 @@ python3 generate_datasets_v2.py --payload payload.json --parallel-providers
 ### Legacy CLI Mode
 
 #### Basic Usage
+
 ```bash
 python3 generate_datasets_v2.py --provider anthropic --model claude-sonnet-4-20250514 --sent-sizes 50,100 --prefix restaurant
 ```
 
 #### Advanced CLI Usage
+
 ```bash
 python3 generate_datasets_v2.py \
     --provider openai \
@@ -158,6 +163,7 @@ python3 generate_datasets_v2.py \
 ```
 
 #### Multi-Model CLI (Single Provider)
+
 ```bash
 python3 generate_datasets_v2.py \
     --provider xai \
@@ -168,27 +174,29 @@ python3 generate_datasets_v2.py \
 
 ### Command Line Options
 
-| Option | Required | Default | Description |
-|--------|----------|---------|-------------|
-| `--payload` | ❌ | - | Path to payload.json for batch configuration |
-| `--provider` | ✅* | - | LLM provider (openai, google, anthropic, xai) |
-| `--model` | ✅* | - | Specific model name(s), comma-separated |
-| `--sent-sizes` | ✅* | - | Comma-separated sentence counts |
-| `--prefix` | ❌ | - | Prefix(es) for output filenames |
-| `--output` | ❌ | `output` | Output directory |
-| `--config` | ❌ | `config.json` | Configuration file path |
-| `--parallel-providers` | ❌ | false | Run providers in parallel (payload mode only) |
-| `--parallel-models` | ❌ | false | Run models in parallel (payload mode only) |
+| Option                 | Required | Default       | Description                                   |
+| ---------------------- | -------- | ------------- | --------------------------------------------- |
+| `--payload`            | ❌       | -             | Path to payload.json for batch configuration  |
+| `--provider`           | ✅\*     | -             | LLM provider (openai, google, anthropic, xai) |
+| `--model`              | ✅\*     | -             | Specific model name(s), comma-separated       |
+| `--sent-sizes`         | ✅\*     | -             | Comma-separated sentence counts               |
+| `--prefix`             | ❌       | -             | Prefix(es) for output filenames               |
+| `--output`             | ❌       | `output`      | Output directory                              |
+| `--config`             | ❌       | `config.json` | Configuration file path                       |
+| `--parallel-providers` | ❌       | false         | Run providers in parallel (payload mode only) |
+| `--parallel-models`    | ❌       | false         | Run models in parallel (payload mode only)    |
 
-*Required only when not using `--payload`
+\*Required only when not using `--payload`
 
 ### Output Files
 
 **With prefix:**
+
 - `<provider>-<prefix>-<size>.xml`
 - Example: `anthropic-restaurant-200.xml`
 
 **Without prefix:**
+
 - `<provider>-<model>-<size>.xml`
 - Example: `openai-gpt-4o-300.xml`
 
@@ -222,6 +230,7 @@ The tool generates SemEval-compliant XML with proper aspect annotations:
 ## 🔄 Error Handling
 
 ### Robust Recovery System
+
 - **XML Validation**: Invalid reviews are discarded, valid ones are kept
 - **Batch Processing**: Failures affect only current batch, not entire generation
 - **Incremental Progress**: Each successful batch is immediately written to file
@@ -231,12 +240,14 @@ The tool generates SemEval-compliant XML with proper aspect annotations:
 ## 🎯 Quality Assurance
 
 ### Review Quality
+
 - **Batch Generation**: 5 reviews per API call for better consistency
 - **Coherent Multi-Sentence Reviews**: Related content across sentences
 - **Realistic Scenarios**: Avoids mixing unrelated food types
 - **Configurable Constraints**: Sentence and opinion counts via config.json
 
 ### XML Structure
+
 - **Valid XML**: Strict validation ensures proper structure
 - **Sequential IDs**: Reviews (0,1,2...) and sentences (reviewId:0, reviewId:1...)
 - **Standard Format**: SemEval-compliant with proper namespaces
@@ -245,16 +256,20 @@ The tool generates SemEval-compliant XML with proper aspect annotations:
 ## 🏗️ Architecture Notes
 
 ### Environment File Location
+
 ### Configuration Design
+
 The `config.json` and `.env` files are located in the `datasets-generator-v2` folder for:
 
 - **Self-contained subproject**: All dependencies and configuration in one place
 - **Easy customization**: Modify generation parameters without code changes
-- **Portability**: Easy to move or distribute independently  
+- **Portability**: Easy to move or distribute independently
 - **Clear separation**: Each subproject manages its own settings and API keys
 
 ### Alternative Setups
+
 If you prefer to keep `.env` at the project root:
+
 1. Move `.env` to the parent directory
 2. Update the script path in `load_dotenv()` if needed
 3. Ensure all subprojects can access the shared environment
@@ -262,6 +277,7 @@ If you prefer to keep `.env` at the project root:
 ## 🤝 Contributing
 
 When modifying the script, please:
+
 1. Update this README to reflect changes
 2. Update `requirements.txt` if adding new dependencies
 3. Test with multiple providers and models
@@ -315,14 +331,17 @@ Generation complete! Successfully created 2/2 datasets.
 ### Common Issues
 
 **API Key Errors:**
+
 - Ensure `.env` file is in the `datasets-generator-v2` folder
 - Check API key validity and quotas
 
 **Connection Timeouts:**
+
 - Increase `--max-retries` for unreliable connections
 - Try smaller dataset sizes first
 
 **Cost Concerns:**
+
 - Use cheaper models like `claude-3-haiku-20240307` for testing
 - Start with small dataset sizes to verify costs
 
@@ -333,6 +352,7 @@ For issues or feature requests, please check the main project repository or crea
 ## 📅 Version History
 
 ### V1.x Series
+
 - **v1.0.0**: Initial release with basic dataset generation
 - **v1.1.0**: Added retry logic and cost estimation
 - **v1.2.0**: Added sentence count validation and formatted tables
@@ -340,9 +360,10 @@ For issues or feature requests, please check the main project repository or crea
 - **v1.3.1**: Updated pricing table to per-million tokens, added requirements.txt
 
 ### V2.x Series
+
 - **v2.0.0**: Complete architectural redesign with three-worker pipeline (PROMPTER, XML Validator, PROCESSOR), batch processing (5 reviews at a time), configurable parameters via `config.json`, robust XML validation, incremental file writing, and enhanced error recovery
 - **v2.1.0**: Added payload.json support, parallel execution capabilities (parallel_providers and parallel_models), multiple models per provider support, enhanced CLI with backward compatibility, async/await architecture for improved performance, and externalized LLM prompt template system
 
 ---
 
-*Generated datasets are designed for research purposes in aspect-based sentiment analysis. Always verify data quality and comply with your institution's research guidelines.*
+_Generated datasets are designed for research purposes in aspect-based sentiment analysis. Always verify data quality and comply with your institution's research guidelines._
